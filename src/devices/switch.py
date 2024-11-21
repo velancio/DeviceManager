@@ -7,12 +7,14 @@ from src.device import Device
 
 class SwitchStateRepr(Enum):
     """Enumeration of possible switch states."""
-    ON = 'ON'
-    OFF = 'OFF'
+
+    ON = "ON"
+    OFF = "OFF"
 
 
 class SwitchState(ABC):
     """Abstract base class for switch states."""
+
     @abstractmethod
     def toggle(self, switch: Device) -> None:
         """Toggles the switch state."""
@@ -21,6 +23,7 @@ class SwitchState(ABC):
 
 class OnSwitch(SwitchState):
     """On state for the switch."""
+
     def toggle(self, switch: Device) -> None:
         """Toggles the switch to off state."""
         switch.state = OffSwitch()
@@ -32,6 +35,7 @@ class OnSwitch(SwitchState):
 
 class OffSwitch(SwitchState):
     """Off state for the switch."""
+
     def toggle(self, switch: Device) -> None:
         """Toggles the switch to on state."""
         switch.state = OnSwitch()
@@ -43,6 +47,7 @@ class OffSwitch(SwitchState):
 
 class Switch(Device):
     """Implementation of a switch device."""
+
     def __init__(self, device_id: str, name: str) -> None:
         """Initializes a switch device."""
         super().__init__(device_id, name)
@@ -55,7 +60,7 @@ class Switch(Device):
     def get_state(self) -> Dict[str, Any]:
         """Returns the current state of the switch."""
         state = super().get_state()
-        state.update({'state': self.state.__repr__()})
+        state.update({"state": self.state.__repr__()})
         return state
 
     def __repr__(self):

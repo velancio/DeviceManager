@@ -5,6 +5,7 @@ from src.device import Device
 
 class Hub:
     """Represents a hub."""
+
     def __init__(self, hub_id: str) -> None:
         """Initializes a hub."""
         self._hub_id = hub_id

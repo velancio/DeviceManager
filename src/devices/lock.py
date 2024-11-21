@@ -7,6 +7,7 @@ from src.device import Device
 
 class ILock(Device):
     """Interface for lock devices."""
+
     @abstractmethod
     def verify_pin_code(self, pin_code: str) -> bool:
         """Verifies the pin code for the lock."""
@@ -18,12 +19,14 @@ class ILock(Device):
 
 class LockStateRepr(Enum):
     """Enumeration of possible lock states."""
-    LOCKED = 'LOCKED'  # Locked state representation
-    UNLOCKED = 'UNLOCKED'  # Unlocked state representation
+
+    LOCKED = "LOCKED"  # Locked state representation
+    UNLOCKED = "UNLOCKED"  # Unlocked state representation
 
 
 class LockState(ABC):
     """Abstract base class for lock states."""
+
     @abstractmethod
     def toggle(self, lock: ILock, pin_code: Optional[str] = None) -> None:
         """Toggles the lock state."""
@@ -31,6 +34,7 @@ class LockState(ABC):
 
 class Locked(LockState):
     """Locked state for the lock."""
+
     def toggle(self, lock: ILock, pin_code: Optional[str] = None) -> None:
         """Toggles the lock to unlocked state."""
         if lock.is_pin_code():
@@ -48,6 +52,7 @@ class Locked(LockState):
 
 class Unlocked(LockState):
     """Unlocked state for the lock."""
+
     def toggle(self, lock: ILock, pin_code: Optional[str] = None) -> None:
         """Toggles the lock to locked state."""
         lock.state = Locked()
@@ -59,7 +64,10 @@ class Unlocked(LockState):
 
 class Lock(ILock):
     """Implementation of a lock device."""
-    def __init__(self, device_id: str, name: str, pin_code: Optional[str] = None) -> None:
+
+    def __init__(
+        self, device_id: str, name: str, pin_code: Optional[str] = None
+    ) -> None:
         """Initializes a lock device."""
         super().__init__(device_id, name)
         self._pin_code = pin_code
@@ -72,7 +80,12 @@ class Lock(ILock):
     def get_state(self) -> Dict[str, Any]:
         """Returns the current state of the lock."""
         state = super().get_state()
-        state.update({'is_locked': self.state.__repr__(), 'pin_code_set': self._pin_code is not None})
+        state.update(
+            {
+                "is_locked": self.state.__repr__(),
+                "pin_code_set": self._pin_code is not None,
+            }
+        )
         return state
 
     def verify_pin_code(self, pin_code: str) -> bool:

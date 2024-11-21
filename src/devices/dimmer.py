@@ -6,6 +6,7 @@ from src.device import Device
 
 class DimmerDefaults(Enum):
     """Default values for dimmer settings"""
+
     MIN_BRIGTHNESS = 0
     MAX_BRIGTHNESS = 100
     DEFAULT_BRIGTHNESS = 50
@@ -13,7 +14,13 @@ class DimmerDefaults(Enum):
 
 class Dimmer(Device):
     """Represents a dimmer device"""
-    def __init__(self, device_id: str, name: str, brightness: int = DimmerDefaults.DEFAULT_BRIGTHNESS.value) -> None:
+
+    def __init__(
+        self,
+        device_id: str,
+        name: str,
+        brightness: int = DimmerDefaults.DEFAULT_BRIGTHNESS.value,
+    ) -> None:
         """Initializes a dimmer device with a given ID, name, and brightness"""
         super().__init__(device_id, name)
         self._brightness = brightness
@@ -22,12 +29,15 @@ class Dimmer(Device):
         """Updates the brightness of the dimmer device"""
         if brightness is None:
             return
-        self._brightness = max(DimmerDefaults.MIN_BRIGTHNESS.value, min(brightness, DimmerDefaults.MAX_BRIGTHNESS.value))
+        self._brightness = max(
+            DimmerDefaults.MIN_BRIGTHNESS.value,
+            min(brightness, DimmerDefaults.MAX_BRIGTHNESS.value),
+        )
 
     def get_state(self) -> Dict[str, Any]:
         """Returns the current state of the dimmer device"""
         state = super().get_state()
-        state.update({'brightness': self._brightness})
+        state.update({"brightness": self._brightness})
         return state
 
     def __repr__(self):

@@ -18,6 +18,7 @@ def hub():
 
 class TestDwelling:
     """Test class for dwelling"""
+
     def test_dwelling_id(self, dwelling):
         """Test retrieving dwelling_id functionality"""
         assert dwelling.get_dwelling_id() == "dwelling_1"

@@ -3,7 +3,7 @@ import pytest
 from src.device import DeviceType
 from src.device_manager import DeviceManager
 from src.devices.lock import LockStateRepr
-from src.devices.switch import SwitchState, SwitchStateRepr
+from src.devices.switch import SwitchStateRepr
 from src.devices.thermostat import ThermostatStateRepr
 from src.hub import Hub
 
@@ -22,22 +22,29 @@ def hub():
 
 class TestDevices:
     """Test class for devices"""
+
     def test_pair(self, device_manager, hub):
         """Test pair device to hub functionality"""
-        switch = device_manager.create_device(DeviceType.SWITCH, "switch_1", "Living Room Light")
+        switch = device_manager.create_device(
+            DeviceType.SWITCH, "switch_1", "Living Room Light"
+        )
         hub.add_device(switch)
         assert switch.get_paired()
 
     def test_unpair(self, device_manager, hub):
         """Test unpair device from hub functionality"""
-        switch = device_manager.create_device(DeviceType.SWITCH, "switch_1", "Living Room Light")
+        switch = device_manager.create_device(
+            DeviceType.SWITCH, "switch_1", "Living Room Light"
+        )
         hub.add_device(switch)
         hub.remove_device("switch_1")
         assert not switch.get_paired()
 
     def test_dimmer(self, device_manager, hub):
         """Test dimmer device functionality"""
-        dimmer = device_manager.create_device(DeviceType.DIMMER, "dimmer_1", "Bedroom Dimmer")
+        dimmer = device_manager.create_device(
+            DeviceType.DIMMER, "dimmer_1", "Bedroom Dimmer"
+        )
 
         # check for brightness update within the range
         dimmer.update_state(brightness=40)
@@ -53,7 +60,9 @@ class TestDevices:
 
     def test_switch(self, device_manager, hub):
         """Test switch device functionality"""
-        switch = device_manager.create_device(DeviceType.SWITCH, "switch_1", "Living Room Light")
+        switch = device_manager.create_device(
+            DeviceType.SWITCH, "switch_1", "Living Room Light"
+        )
 
         switch.update_state()
         assert switch.get_state()["state"] == SwitchStateRepr.ON.name
@@ -71,13 +80,15 @@ class TestDevices:
         lock.update_state()
         assert lock.get_state()["is_locked"] == LockStateRepr.UNLOCKED.name
 
-        #lock.update_state(is_locked=False, pin_code="1234")
-        #assert not lock.get_state()["is_locked"]
-        #assert lock.get_state()["pin_code"] == "1234"
+        # lock.update_state(is_locked=False, pin_code="1234")
+        # assert not lock.get_state()["is_locked"]
+        # assert lock.get_state()["pin_code"] == "1234"
 
     def test_lock_with_correct_pincode(self, device_manager, hub):
         """Test lock device with correct pincode functionality"""
-        lock = device_manager.create_device(DeviceType.LOCK, "lock_1", "Front Door", pin_code="1234")
+        lock = device_manager.create_device(
+            DeviceType.LOCK, "lock_1", "Front Door", pin_code="1234"
+        )
 
         lock.update_state()
         assert lock.get_state()["is_locked"] == LockStateRepr.LOCKED.name
@@ -87,7 +98,9 @@ class TestDevices:
 
     def test_lock_with_incorrect_pincode(self, device_manager, hub):
         """Test lock device with incorrect pincode functionality"""
-        lock = device_manager.create_device(DeviceType.LOCK, "lock_1", "Front Door", pin_code="1234")
+        lock = device_manager.create_device(
+            DeviceType.LOCK, "lock_1", "Front Door", pin_code="1234"
+        )
 
         lock.update_state()
         assert lock.get_state()["is_locked"] == LockStateRepr.LOCKED.name
@@ -99,7 +112,9 @@ class TestDevices:
 
     def test_thermostat(self, device_manager, hub):
         """Test thermostat device functionality"""
-        thermo = device_manager.create_device(DeviceType.THERMOSTAT, "thermo_1", "Main Thermostat", temperature=62.5)
+        thermo = device_manager.create_device(
+            DeviceType.THERMOSTAT, "thermo_1", "Main Thermostat", temperature=62.5
+        )
 
         thermo.update_state(mode=ThermostatStateRepr.HEAT)
         assert thermo.get_state()["mode"] == ThermostatStateRepr.HEAT.name
@@ -112,5 +127,3 @@ class TestDevices:
         thermo.update_state(mode=ThermostatStateRepr.OFF)
         assert thermo.get_state()["mode"] == ThermostatStateRepr.OFF.name
         assert thermo.get_state()["temperature"] == 82.5
-
-

@@ -12,9 +12,12 @@ def device_manager():
 
 class TestDeviceManager:
     """Tests for the DeviceManager class"""
+
     def test_create_device(self, device_manager):
         """Test device creation functionality"""
-        switch = device_manager.create_device(DeviceType.SWITCH, "switch_1", "Living Room Light")
+        switch = device_manager.create_device(
+            DeviceType.SWITCH, "switch_1", "Living Room Light"
+        )
 
         assert switch is not None
         assert switch.get_device_id() == "switch_1"
@@ -23,7 +26,9 @@ class TestDeviceManager:
 
     def test_delete_device(self, device_manager):
         """Test device deletion"""
-        switch = device_manager.create_device(DeviceType.SWITCH, "switch_1", "Living Room Light")
+        switch = device_manager.create_device(
+            DeviceType.SWITCH, "switch_1", "Living Room Light"
+        )
         assert switch.get_device_id() == "switch_1"
 
         device_manager.delete_device(switch.get_device_id())
@@ -35,10 +40,16 @@ class TestDeviceManager:
         """
         # Create multiple devices
         devices = [
-            device_manager.create_device(DeviceType.SWITCH, "switch_1", "Living Room Light"),
+            device_manager.create_device(
+                DeviceType.SWITCH, "switch_1", "Living Room Light"
+            ),
             device_manager.create_device(DeviceType.LOCK, "lock_1", "Front Door"),
-            device_manager.create_device(DeviceType.DIMMER, "dimmer_1", "Bedroom Dimmer"),
-            device_manager.create_device(DeviceType.THERMOSTAT, "thermo_1", "Main Thermostat")
+            device_manager.create_device(
+                DeviceType.DIMMER, "dimmer_1", "Bedroom Dimmer"
+            ),
+            device_manager.create_device(
+                DeviceType.THERMOSTAT, "thermo_1", "Main Thermostat"
+            ),
         ]
 
         # Verify all devices are in the list
@@ -52,7 +63,7 @@ class TestDeviceManager:
         """
 
         # Create multiple devices
-        switch = device_manager.create_device(DeviceType.SWITCH, "switch_1", "Living Room Light")
+        device_manager.create_device(DeviceType.SWITCH, "switch_1", "Living Room Light")
         lock = device_manager.create_device(DeviceType.LOCK, "lock_1", "Front Door")
 
         # Delete one device
@@ -63,12 +74,10 @@ class TestDeviceManager:
         assert len(listed_devices) == 1
         assert listed_devices[0] == lock
 
-    @pytest.mark.parametrize("device_type", [
-        DeviceType.SWITCH,
-        DeviceType.LOCK,
-        DeviceType.DIMMER,
-        DeviceType.THERMOSTAT
-    ])
+    @pytest.mark.parametrize(
+        "device_type",
+        [DeviceType.SWITCH, DeviceType.LOCK, DeviceType.DIMMER, DeviceType.THERMOSTAT],
+    )
     def test_list_devices_by_type(self, device_type, device_manager):
         """
         Parametrized test to verify device listing for each device type
@@ -77,7 +86,7 @@ class TestDeviceManager:
         device = device_manager.create_device(
             device_type,
             f"{device_type.value}_1",
-            f"{device_type.value.capitalize()} Device"
+            f"{device_type.value.capitalize()} Device",
         )
 
         # Verify the device is in the list

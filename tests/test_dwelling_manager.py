@@ -11,6 +11,7 @@ def dwelling_manager():
 
 class TestDwellingManager:
     """Test class for DwellingManager"""
+
     def test_create_dwelling(self, dwelling_manager):
         """Test dwelling creation functionality"""
         dwelling = dwelling_manager.create_dwelling("dwelling_1")
@@ -28,7 +29,7 @@ class TestDwellingManager:
             dwelling_manager.create_dwelling("dwelling_1"),
             dwelling_manager.create_dwelling("dwelling_2"),
             dwelling_manager.create_dwelling("dwelling_3"),
-            dwelling_manager.create_dwelling("dwelling_4")
+            dwelling_manager.create_dwelling("dwelling_4"),
         ]
 
         # Verify all devices are in the list

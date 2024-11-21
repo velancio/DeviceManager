@@ -5,6 +5,7 @@ from src.dwelling import Dwelling
 
 class DwellingManager:
     """Manages a collection of dwellings."""
+
     def __init__(self) -> None:
         """Initializes a dwelling collection."""
         self._dwellings: Dict[str, Dwelling] = {}

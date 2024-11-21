@@ -1,6 +1,5 @@
 from src.device import DeviceType
 from src.device_manager import DeviceManager
-from src.devices.switch import SwitchState
 from src.devices.thermostat import ThermostatStateRepr
 from src.dwelling_manager import DwellingManager
 from src.hub import Hub
@@ -21,11 +20,19 @@ def main():
     home.install_hub(hub)
 
     # Create devices
-    switch = device_manager.create_device(DeviceType.SWITCH, "switch_1", "Family room lights")
+    switch = device_manager.create_device(
+        DeviceType.SWITCH, "switch_1", "Family room lights"
+    )
     lock = device_manager.create_device(DeviceType.LOCK, "lock_1", "Back Door Lock")
-    lock_with_pincode = device_manager.create_device(DeviceType.LOCK, "lock_2", "Front Door Lock", pin_code="1234")
-    thermostat = device_manager.create_device(DeviceType.THERMOSTAT, "thermo_1", "Main Thermostat", temperature=72.5)
-    dimmer = device_manager.create_device(DeviceType.DIMMER, "dimmer_1", "Bedroom Dimmer")
+    lock_with_pincode = device_manager.create_device(
+        DeviceType.LOCK, "lock_2", "Front Door Lock", pin_code="1234"
+    )
+    thermostat = device_manager.create_device(
+        DeviceType.THERMOSTAT, "thermo_1", "Main Thermostat", temperature=72.5
+    )
+    dimmer = device_manager.create_device(
+        DeviceType.DIMMER, "dimmer_1", "Bedroom Dimmer"
+    )
 
     # Pair the device with the hub
     hub.add_device(switch)
@@ -43,9 +50,13 @@ def main():
     thermostat.update_state(mode=ThermostatStateRepr.HEAT)
 
     # List of devices and dwellings
-    print(f"Paired devices: {hub.get_paired_devices()}")
-    print(f"All devices: {device_manager.list_devices()}")
-    print(f"All dwelllings: {dwelling_manager.list_dwellings()}")
+    print("=================    Paired devices   ======================")
+    print(f"{hub.get_paired_devices()}")
+    print("=================    All devices   ======================")
+    print("{device_manager.list_devices()}")
+    print("=================    All dwelllings   ======================")
+    print(f"{dwelling_manager.list_dwellings()}")
+    print("============================================================")
 
 
 if __name__ == "__main__":

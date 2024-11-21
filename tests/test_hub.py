@@ -19,13 +19,16 @@ def device_manager():
 
 class TestHub:
     """Tests for Hub class"""
+
     def test_hub_id(self, hub):
         """Test retrieving hub_id functionality"""
         assert hub.get_hub_id() == "hub_1"
 
     def test_add_device_hub(self, hub, device_manager):
         """Test adding device to a hub functionality"""
-        switch = device_manager.create_device(DeviceType.SWITCH, "switch_1", "Living Room Light")
+        switch = device_manager.create_device(
+            DeviceType.SWITCH, "switch_1", "Living Room Light"
+        )
         lock = device_manager.create_device(DeviceType.LOCK, "lock_1", "Front Door")
 
         hub.add_device(switch)
@@ -39,7 +42,9 @@ class TestHub:
 
     def test_remove_device_hub(self, hub, device_manager):
         """Test removing device from a hub functionality"""
-        switch = device_manager.create_device(DeviceType.SWITCH, "switch_1", "Living Room Light")
+        switch = device_manager.create_device(
+            DeviceType.SWITCH, "switch_1", "Living Room Light"
+        )
         lock = device_manager.create_device(DeviceType.LOCK, "lock_1", "Front Door")
 
         hub.add_device(switch)
@@ -59,10 +64,16 @@ class TestHub:
         """
         # Create multiple devices
         devices = [
-            device_manager.create_device(DeviceType.SWITCH, "switch_1", "Living Room Light"),
+            device_manager.create_device(
+                DeviceType.SWITCH, "switch_1", "Living Room Light"
+            ),
             device_manager.create_device(DeviceType.LOCK, "lock_1", "Front Door"),
-            device_manager.create_device(DeviceType.DIMMER, "dimmer_1", "Bedroom Dimmer"),
-            device_manager.create_device(DeviceType.THERMOSTAT, "thermo_1", "Main Thermostat")
+            device_manager.create_device(
+                DeviceType.DIMMER, "dimmer_1", "Bedroom Dimmer"
+            ),
+            device_manager.create_device(
+                DeviceType.THERMOSTAT, "thermo_1", "Main Thermostat"
+            ),
         ]
 
         for device in devices:
@@ -79,10 +90,16 @@ class TestHub:
         """
         # Create multiple devices
         devices = [
-            device_manager.create_device(DeviceType.SWITCH, "switch_1", "Living Room Light"),
+            device_manager.create_device(
+                DeviceType.SWITCH, "switch_1", "Living Room Light"
+            ),
             device_manager.create_device(DeviceType.LOCK, "lock_1", "Front Door"),
-            device_manager.create_device(DeviceType.DIMMER, "dimmer_1", "Bedroom Dimmer"),
-            device_manager.create_device(DeviceType.THERMOSTAT, "thermo_1", "Main Thermostat")
+            device_manager.create_device(
+                DeviceType.DIMMER, "dimmer_1", "Bedroom Dimmer"
+            ),
+            device_manager.create_device(
+                DeviceType.THERMOSTAT, "thermo_1", "Main Thermostat"
+            ),
         ]
 
         for device in devices:
@@ -95,4 +112,3 @@ class TestHub:
         assert "lock_1" in hub.get_paired_devices().keys()
         assert "dimmer_1" in hub.get_paired_devices().keys()
         assert "thermo_1" in hub.get_paired_devices().keys()
-

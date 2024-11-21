@@ -5,6 +5,7 @@ from typing import Dict, Any
 
 class DeviceType(Enum):
     """Enumeration of possible device types."""
+
     SWITCH = "switch"  # Switch device type
     DIMMER = "dimmer"  # Dimmer device type
     LOCK = "lock"  # Lock device type
@@ -13,6 +14,7 @@ class DeviceType(Enum):
 
 class Device(ABC):
     """Abstract base class for devices."""
+
     def __init__(self, device_id: str, name: str, **kwargs) -> None:
         """Initializes a device."""
         self._device_id = device_id  # Unique device ID
@@ -28,7 +30,7 @@ class Device(ABC):
         state = {
             "device_id": self._device_id,  # Device ID
             "name": self._name,  # Device name
-            "is_paired": self._is_paired  # Paired status
+            "is_paired": self._is_paired,  # Paired status
         }
         return state
 
