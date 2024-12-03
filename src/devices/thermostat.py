@@ -2,7 +2,7 @@ from abc import abstractmethod, ABC
 from enum import Enum
 from typing import Dict, Any, Optional
 
-from src.device import Device
+from src.device import Device, State
 
 
 class IThermostat(Device):
@@ -22,7 +22,7 @@ class ThermostatStateRepr(Enum):
     OFF = "OFF"
 
 
-class ThermostatState(ABC):
+class ThermostatState(State):
     """Abstract base class for thermostat states."""
 
 
@@ -68,6 +68,7 @@ class Thermostat(IThermostat):
         self,
         mode: Optional[ThermostatStateRepr] = None,
         temperature: Optional[float] = None,
+        **kwargs,
     ) -> None:
         """Updates the state of the thermostat."""
         if temperature is not None:

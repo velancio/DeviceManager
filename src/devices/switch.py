@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from enum import Enum
 from typing import Dict, Any
 
-from src.device import Device
+from src.device import Device, State
 
 
 class SwitchStateRepr(Enum):
@@ -12,48 +12,14 @@ class SwitchStateRepr(Enum):
     OFF = "OFF"
 
 
-class SwitchState(ABC):
-    """Abstract base class for switch states."""
-
-    @abstractmethod
-    def toggle(self, switch: Device) -> None:
-        """Toggles the switch state."""
-        pass
-
-
-class OnSwitch(SwitchState):
-    """On state for the switch."""
-
-    def toggle(self, switch: Device) -> None:
-        """Toggles the switch to off state."""
-        switch.state = OffSwitch()
-
-    def __repr__(self):
-        """Representation of the object"""
-        return f"{SwitchStateRepr.ON.name}"
-
-
-class OffSwitch(SwitchState):
-    """Off state for the switch."""
-
-    def toggle(self, switch: Device) -> None:
-        """Toggles the switch to on state."""
-        switch.state = OnSwitch()
-
-    def __repr__(self):
-        """Representation of the object"""
-        return f"{SwitchStateRepr.OFF.name}"
-
-
 class Switch(Device):
     """Implementation of a switch device."""
-
     def __init__(self, device_id: str, name: str) -> None:
         """Initializes a switch device."""
         super().__init__(device_id, name)
-        self.state = OffSwitch()
+        self.state: SwitchState = OffSwitch()
 
-    def update_state(self) -> None:
+    def update_state(self, **kwargs) -> None:
         """Updates the state of the switch."""
         self.state.toggle(self)
 
@@ -66,3 +32,36 @@ class Switch(Device):
     def __repr__(self):
         """Representation of the object"""
         return f"{self.get_device_id()} is {self.state.__repr__()}"
+
+
+class SwitchState(State):
+    """Abstract base class for switch states."""
+
+    @abstractmethod
+    def toggle(self, switch: Switch) -> None:
+        """Toggles the switch state."""
+        pass
+
+
+class OnSwitch(SwitchState):
+    """On state for the switch."""
+
+    def toggle(self, switch: Switch) -> None:
+        """Toggles the switch to off state."""
+        switch.state = OffSwitch()
+
+    def __repr__(self):
+        """Representation of the object"""
+        return f"{SwitchStateRepr.ON.name}"
+
+
+class OffSwitch(SwitchState):
+    """Off state for the switch."""
+
+    def toggle(self, switch: Switch) -> None:
+        """Toggles the switch to on state."""
+        switch.state = OnSwitch()
+
+    def __repr__(self):
+        """Representation of the object"""
+        return f"{SwitchStateRepr.OFF.name}"

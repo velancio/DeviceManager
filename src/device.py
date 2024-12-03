@@ -3,6 +3,10 @@ from enum import Enum
 from typing import Dict, Any
 
 
+class State(ABC):
+    pass
+
+
 class DeviceType(Enum):
     """Enumeration of possible device types."""
 
@@ -14,7 +18,6 @@ class DeviceType(Enum):
 
 class Device(ABC):
     """Abstract base class for devices."""
-
     def __init__(self, device_id: str, name: str, **kwargs) -> None:
         """Initializes a device."""
         self._device_id = device_id  # Unique device ID

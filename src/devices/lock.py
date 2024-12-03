@@ -2,11 +2,19 @@ from abc import ABC, abstractmethod
 from enum import Enum
 from typing import Dict, Any, Optional
 
-from src.device import Device
+from src.device import Device, State
 
 
 class ILock(Device):
     """Interface for lock devices."""
+
+    def __init__(
+            self, device_id: str, name: str, pin_code: Optional[str] = None
+    ) -> None:
+        """Initializes a lock device."""
+        super().__init__(device_id, name)
+        self.state: LockState = Unlocked()
+        self._pin_code: Optional[str] = pin_code
 
     @abstractmethod
     def verify_pin_code(self, pin_code: str) -> bool:
@@ -24,56 +32,10 @@ class LockStateRepr(Enum):
     UNLOCKED = "UNLOCKED"  # Unlocked state representation
 
 
-class LockState(ABC):
-    """Abstract base class for lock states."""
-
-    @abstractmethod
-    def toggle(self, lock: ILock, pin_code: Optional[str] = None) -> None:
-        """Toggles the lock state."""
-
-
-class Locked(LockState):
-    """Locked state for the lock."""
-
-    def toggle(self, lock: ILock, pin_code: Optional[str] = None) -> None:
-        """Toggles the lock to unlocked state."""
-        if lock.is_pin_code():
-            if pin_code and lock.verify_pin_code(pin_code):
-                lock.state = Unlocked()
-            else:
-                raise ValueError("Incorrect PIN code")
-        else:
-            lock.state = Unlocked()
-
-    def __repr__(self) -> str:
-        """Returns a string representation of the object."""
-        return f"{LockStateRepr.LOCKED.name}"
-
-
-class Unlocked(LockState):
-    """Unlocked state for the lock."""
-
-    def toggle(self, lock: ILock, pin_code: Optional[str] = None) -> None:
-        """Toggles the lock to locked state."""
-        lock.state = Locked()
-
-    def __repr__(self) -> str:
-        """Returns a string representation of the object."""
-        return f"{LockStateRepr.UNLOCKED.name}"
-
-
 class Lock(ILock):
     """Implementation of a lock device."""
 
-    def __init__(
-        self, device_id: str, name: str, pin_code: Optional[str] = None
-    ) -> None:
-        """Initializes a lock device."""
-        super().__init__(device_id, name)
-        self._pin_code = pin_code
-        self.state = Unlocked()
-
-    def update_state(self, pin_code: Optional[str] = None) -> None:
+    def update_state(self, pin_code: Optional[str] = None, **kwargs) -> None:
         """Updates the state of the lock."""
         self.state.toggle(self, pin_code)
 
@@ -99,3 +61,41 @@ class Lock(ILock):
     def __repr__(self) -> str:
         """Returns a string representation of the object."""
         return f"{self.get_device_id()} is {self.state.__repr__()}"
+
+
+class LockState(State):
+    """Abstract base class for lock states."""
+
+    @abstractmethod
+    def toggle(self, lock: Lock, pin_code: Optional[str] = None) -> None:
+        """Toggles the lock state."""
+
+
+class Locked(LockState):
+    """Locked state for the lock."""
+
+    def toggle(self, lock: Lock, pin_code: Optional[str] = None) -> None:
+        """Toggles the lock to unlocked state."""
+        if lock.is_pin_code():
+            if pin_code and lock.verify_pin_code(pin_code):
+                lock.state = Unlocked()
+            else:
+                raise ValueError("Incorrect PIN code")
+        else:
+            lock.state = Unlocked()
+
+    def __repr__(self) -> str:
+        """Returns a string representation of the object."""
+        return f"{LockStateRepr.LOCKED.name}"
+
+
+class Unlocked(LockState):
+    """Unlocked state for the lock."""
+
+    def toggle(self, lock: Lock, pin_code: Optional[str] = None) -> None:
+        """Toggles the lock to locked state."""
+        lock.state = Locked()
+
+    def __repr__(self) -> str:
+        """Returns a string representation of the object."""
+        return f"{LockStateRepr.UNLOCKED.name}"

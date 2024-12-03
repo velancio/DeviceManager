@@ -25,7 +25,7 @@ class Dimmer(Device):
         super().__init__(device_id, name)
         self._brightness = brightness
 
-    def update_state(self, brightness: Optional[int] = None) -> None:
+    def update_state(self, brightness: Optional[int] = None, **kwargs) -> None:
         """Updates the brightness of the dimmer device"""
         if brightness is None:
             return

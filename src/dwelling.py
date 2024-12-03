@@ -8,7 +8,7 @@ class Dwelling:
         """Initializes a dwelling."""
         self._dwelling_id = dwelling_id  # Unique dwelling ID
         self._is_occupied = False  # Dwelling occupancy status
-        self._hub: Hub = None  # Hub associated with the dwelling
+        self._hub: Hub | None = None  # Hub associated with the dwelling
 
     def install_hub(self, hub: Hub) -> None:
         """Adds a hub to the dwelling."""
@@ -26,7 +26,7 @@ class Dwelling:
         """Returns the Unique dwelling ID."""
         return self._dwelling_id
 
-    def get_hub(self) -> Hub:
+    def get_hub(self) -> Hub | None:
         """Returns the hub associated with the dwelling."""
         return self._hub
 
